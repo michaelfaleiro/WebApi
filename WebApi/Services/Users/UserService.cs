@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WebApi.Data;
 using WebApi.Models;
 
@@ -16,11 +14,11 @@ public class UserService : IUserInteface
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
-    public async Task<UsersModel> CreateUser(UsersModel users)
+    public async Task<UsersModel> CreateUser(UsersModel user)
     {
-        await _context.Users.AddAsync(users);
+        await _context.Users.AddAsync(user);
         await _context.SaveChangesAsync();
-        return users;
+        return user;
     }
 
     public async Task<UsersModel> FindUser(int id)
@@ -32,4 +30,6 @@ public class UserService : IUserInteface
     {
         return await _context.Users.AsNoTracking().Skip(skip).Take(take).ToListAsync();
     }
+
+
 }

@@ -1,9 +1,7 @@
-﻿using System.Net;
-using AutoMapper;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SecureIdentity.Password;
-using WebApi.Data;
 using WebApi.Dtos.Users;
 using WebApi.Models;
 using WebApi.Services.Users;
@@ -12,6 +10,7 @@ namespace WebApi.Controllers;
 
 [ApiController]
 [Route("v1/api/[controller]")]
+[Authorize(Roles = "Admin")]
 public class UsersController : ControllerBase
 {
 
@@ -25,13 +24,14 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
+
     public async Task<IActionResult> CreateUser([FromBody] CreateUserDto userDto)
     {
         UsersModel user = _mapper.Map<UsersModel>(userDto);
         var password = userDto.Password;
         user.Password = PasswordHasher.Hash(password);
         await _userInteface.CreateUser(user);
-        return Created("/v1/api/users/" + user.Id, null);
+        return Created("~/v1/api/users/" + user.Id, null);
     }
 
 
@@ -49,9 +49,9 @@ public class UsersController : ControllerBase
 
     [HttpGet("{id}")]
 
-    public async Task<IActionResult> FindUser(int id)
+    public async Task<ActionResult<UsersModel>> FindUser(int id)
     {
-        var user = await _userInteface.FindUser(id);
+        UsersModel user = await _userInteface.FindUser(id);
         if (user != null)
         {
             ReadUsersDto readUsersDto = _mapper.Map<ReadUsersDto>(user);
@@ -59,4 +59,14 @@ public class UsersController : ControllerBase
         }
         return NotFound("Não encontrado");
     }
+
+    [HttpPatch("{id}")]
+
+    public async Task<ActionResult<UsersModel>> UpdateUser([FromQuery] int id)
+    {
+        return Ok();
+    }
+
 }
+
+
