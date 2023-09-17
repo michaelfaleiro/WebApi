@@ -9,62 +9,27 @@ namespace WebApi.Services.Users;
 public class UserService : IUserInteface
 {
     private readonly AppDbContext _context;
-   
+
 
     public UserService(AppDbContext context)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
-
-    async Task<ServiceResponse<UsersModel>> IUserInteface.CreateUser(UsersModel users)
+    public async Task<UsersModel> CreateUser(UsersModel users)
     {
-        ServiceResponse<UsersModel> serviceResponse = null;
-        try
-        {
-            if (users == null)
-            {
-                serviceResponse.Dados = null;
-                serviceResponse.Mensagem = "Informar Dados";
-                serviceResponse.Sucesso = false;
-
-                return serviceResponse;
-            }
-
-            _context.Users.Add(users);
-            await _context.SaveChangesAsync();
-
-            
-            
-        } catch (Exception ex)
-        {
-            serviceResponse.Mensagem = ex.Message;
-            serviceResponse.Sucesso = false;
-        }
-
-        return serviceResponse;
+        await _context.Users.AddAsync(users);
+        await _context.SaveChangesAsync();
+        return users;
     }
 
-    async Task<ServiceResponse<List<UsersModel>>> IUserInteface.GetUsers(int take, int skip)
+    public async Task<UsersModel> FindUser(int id)
     {
+        return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+    }
 
-        ServiceResponse<List<UsersModel>> serviceResponse = new();
-
-        try
-        {
-            serviceResponse.Dados = await _context.Users.AsNoTracking().ToListAsync();
-            if (serviceResponse.Dados.Count == 0)
-            {
-                serviceResponse.Mensagem = "Nenhum dado encontrado";
-            }
-        }  catch (Exception ex)
-        {
-            serviceResponse.Mensagem = ex.Message;
-            serviceResponse.Sucesso = false;
-        }
-        return serviceResponse;
-
-       
-
+    public async Task<IEnumerable<UsersModel>> GetUsers(int skip, int take)
+    {
+        return await _context.Users.AsNoTracking().Skip(skip).Take(take).ToListAsync();
     }
 }

@@ -9,6 +9,6 @@ public class UserProfile : Profile
     public UserProfile()
     {
         CreateMap<CreateUserDto, UsersModel>();
-        CreateMap<ReadUsersDto, UsersModel>();
+        CreateMap<UsersModel, ReadUsersDto>();
     }
 }
