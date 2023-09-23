@@ -9,7 +9,7 @@ using WebApi.Services;
 namespace WebApi.Controllers;
 
 [ApiController]
-[Route("/v1/api/account/")]
+[Route("/api/v1/account/")]
 public class AccountController : ControllerBase
 {
     private readonly TokenService _tokenService;

@@ -7,6 +7,9 @@ public class AppDbContext : DbContext
 {
     private IConfiguration _configuration;
     public DbSet<UsersModel> Users { get; set; }
+    public DbSet<Orcamento> Orcamentos { get; set; }
+    public DbSet<Produto> Produtos { get; set; }
+
 
     public AppDbContext(IConfiguration configuration, DbContextOptions options) : base(options)
     {
@@ -19,5 +22,5 @@ public class AppDbContext : DbContext
         optionsBuilder.UseNpgsql(connectionString);
     }
 
-    
+
 }

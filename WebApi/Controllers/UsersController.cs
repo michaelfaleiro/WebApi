@@ -9,8 +9,8 @@ using WebApi.Services.Users;
 namespace WebApi.Controllers;
 
 [ApiController]
-[Route("v1/api/[controller]")]
-[Authorize(Roles = "Admin")]
+[Route("/api/v1/[controller]")]
+
 public class UsersController : ControllerBase
 {
 
@@ -34,7 +34,7 @@ public class UsersController : ControllerBase
         return Created("~/v1/api/users/" + user.Id, null);
     }
 
-
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UsersModel>>> GetUsers([FromQuery] int skip = 0, int take = 25)
     {
