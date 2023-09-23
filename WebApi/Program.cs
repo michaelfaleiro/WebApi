@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using WebApi;
 using WebApi.Data;
 using WebApi.Services;
+using WebApi.Services.Orcamento;
 using WebApi.Services.Users;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddScoped<IUserInteface, UserService>();
+builder.Services.AddScoped<IOrcamentoInterface, OrcamentoService>();
 builder.Services.AddControllers();
 
 builder.Services.AddTransient<TokenService>();

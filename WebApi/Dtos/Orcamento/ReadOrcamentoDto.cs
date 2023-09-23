@@ -4,6 +4,7 @@ namespace WebApi.Dtos.Orcamento;
 
 public class ReadOrcamentoDto
 {
+    public int Id { get; set; }
     public string NomeCliente { get; set; }
 
     public string Telefone { get; set; }
