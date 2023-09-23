@@ -18,7 +18,7 @@ public class Orcamento
     public string Chassis { get; set; }
     public string Status { get; set; }
 
-    public List<Produto> Produtos { get; set; }
+    public List<Produto> Produtos { get; set; } = new List<Produto>();
     public double ValorTotal { get; set; }
 
     public DateTime CreatedDate { get; set; } = DateTime.UtcNow;

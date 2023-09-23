@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Data;
+using WebApi.Dtos.Orcamento;
 using WebApi.Models;
 
 namespace WebApi;
@@ -23,11 +24,12 @@ public class OrcamentosController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Orcamento>>> GetOrcamentos()
+    public async Task<ActionResult<List<ReadOrcamentoDto>>> GetOrcamentos()
     {
+        List<Orcamento> orcamentos = await _context.Orcamentos.Include(x=> x.Produtos).ToListAsync();
+        var orcamentoDto = _mapper.Map<List<ReadOrcamentoDto>>(orcamentos);
 
-        var orcamentos = await _context.Orcamentos.ToListAsync();
-        return Ok(orcamentos);
+        return Ok(orcamentoDto);
     }
 
     [HttpPost]

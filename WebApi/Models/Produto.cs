@@ -17,7 +17,7 @@ public class Produto
 
     [ForeignKey("OrcamentoId")]
     public int OrcamentoId { get; set; }
-    public Orcamento Orcamento { get; set; }
+    public Orcamento? Orcamento { get; set; }
     
     public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
 

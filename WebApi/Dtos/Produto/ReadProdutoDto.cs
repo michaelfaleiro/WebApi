@@ -1,6 +1,6 @@
-﻿namespace WebApi;
+﻿namespace WebApi.Dtos.Produto;
 
-public class CreateProdutoDto
+public class ReadProdutoDto
 {
     public string Sku { get; set; }
     public string Nome { get; set; }

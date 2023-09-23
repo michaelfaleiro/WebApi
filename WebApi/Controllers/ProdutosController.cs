@@ -3,46 +3,58 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Data;
+using WebApi.Dtos.Produto;
+using WebApi.Models;
 
 namespace WebApi;
 
 [ApiController]
 [Route("api/v1/")]
-[Authorize]
+
 public class ProdutosController : ControllerBase
 {
     private readonly AppDbContext _context;
+    private readonly IMapper _mapper;
+
+    public ProdutosController(AppDbContext context, IMapper mapper)
+    {
+        _context = context;
+        _mapper = mapper;
+        
+    }
 
     [HttpPost("orcamentos/{orcamentoId}/produtos")]
-    public async Task<IActionResult> CreateProduto( int orcamentoId, [FromBody] Produto produto)
+    public async Task<IActionResult> CreateProduto( int orcamentoId, [FromBody] Produto produtoNovo)
     {
 
 
         try
         {
+            Console.WriteLine(produtoNovo);
+
+            produtoNovo.OrcamentoId = orcamentoId;
             
-            var orcamento = await _context.Orcamentos.FirstOrDefaultAsync(x => x.Id == orcamentoId);
+            _context.Produtos.Add(produtoNovo);
             
-            if (orcamento == null)
-            {
-                return NotFound("Orcamento não Encontrado");
-            }
-
-            if (produto == null)
-            {
-                return BadRequest("Dados inválidos");
-            }
-
-            produto.OrcamentoId = orcamentoId;
-
-            await _context.Produtos.AddAsync(produto);
             await _context.SaveChangesAsync();
 
-            return Ok(produto);
+            return Ok(produtoNovo);
         } catch (Exception ex)
         {
             return BadRequest(ex.ToString());
         }
 
     }
+
+
+    [HttpGet("produtos")]
+
+    public async Task<ActionResult<List<Produto>>> GetProdutos()
+    {
+        List<Produto> produtos = await _context.Produtos.AsNoTracking().ToListAsync();
+        
+        var readProdutosDto = _mapper.Map<List<ReadProdutoDto>>(produtos);
+        return Ok(readProdutosDto);
+    }
+     
 }
