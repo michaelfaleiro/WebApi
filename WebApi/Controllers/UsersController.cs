@@ -60,12 +60,7 @@ public class UsersController : ControllerBase
         return NotFound("Não encontrado");
     }
 
-    [HttpPatch("{id}")]
-
-    public async Task<ActionResult<UsersModel>> UpdateUser([FromQuery] int id)
-    {
-        return Ok();
-    }
+   
 
 }
 

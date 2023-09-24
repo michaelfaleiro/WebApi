@@ -1,5 +1,6 @@
 
 
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Data;
 
@@ -17,9 +18,11 @@ namespace WebApi.Services.Orcamento
 
         async Task<Models.Orcamento> IOrcamentoInterface.CreateOrcamento(Models.Orcamento orcamento)
         {
+
             await _context.Orcamentos.AddAsync(orcamento);
             await _context.SaveChangesAsync();
             return orcamento;
+
         }
 
         async Task<Models.Orcamento> IOrcamentoInterface.FindOrcamento(int id)
